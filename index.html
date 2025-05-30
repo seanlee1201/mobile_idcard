@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>모바일 신분증</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f2f4f8;
+      font-family: "Noto Sans KR", sans-serif;
+    }
+    .id-card {
+      max-width: 360px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    .id-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: #e5ecf5;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .gov-logo {
+      height: 20px;
+      margin-right: 8px;
+    }
+    .service-title {
+      flex: 1;
+      color: #1a1a1a;
+    }
+    .menu-icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .id-body {
+      padding: 20px;
+    }
+    .photo-qr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .photo {
+      width: 80px;
+      height: 100px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+    }
+    .qr {
+      width: 100px;
+      height: 100px;
+    }
+    .info {
+      margin-top: 16px;
+    }
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .id-number,
+    .additional-info {
+      color: #666;
+      font-size: 14px;
+    }
+    .timer-section {
+      margin-top: 16px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar {
+      height: 6px;
+      background-color: #ddd;
+      margin-top: 8px;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: #007bff;
+      width: 100%;
+      animation: fillShrink 30s linear forwards;
+    }
+    @keyframes fillShrink {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+    .detail-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .warning-banner-container {
+      position: relative;
+      height: 24px;
+      overflow: hidden;
+      background-color: #000;
+    }
+    .warning-banner {
+      color: #0f0;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+      position: absolute;
+      animation: scrollText 10s linear infinite;
+    }
+    @keyframes scrollText {
+      0% { left: 100%; }
+      100% { left: -100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="id-card">
+    <header class="id-header">
+      <img src="https://www.gov.kr/2022/img/logo_header.png" alt="정부로고" class="gov-logo" />
+      <span class="service-title">주민등록증 모바일 확인서비스</span>
+      <span class="menu-icon">☰</span>
+    </header>
+
+    <div class="id-body">
+      <div class="photo-qr">
+        <img src="https://via.placeholder.com/80x100.png?text=Photo" class="photo" alt="증명사진" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://seanlee1201.github.io/mobile-id/adult.html" class="qr" alt="QR코드" />
+      </div>
+      <div class="info">
+        <p class="name">이시형</p>
+        <p class="id-number">061201-3823913</p>
+        <p class="additional-info">부산시 사하구</p>
+      </div>
+      <div class="timer-section">
+        <span class="label">남은시간</span>
+        <span class="timer" id="countdown">30초</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <button class="detail-btn">상세정보 표시</button>
+    </div>
+
+    <div class="warning-banner-container">
+      <div class="warning-banner">
+        캡처방지 시스템이 작동 중입니다.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let timeLeft = 30;
+    const countdownEl = document.getElementById("countdown");
+    const timer = setInterval(() => {
+      timeLeft--;
+      countdownEl.textContent = timeLeft + "초";
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        countdownEl.textContent = "만료됨";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
