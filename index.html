@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>주민등록증모바일확인서비스</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>주민등록증 모바일 확인서비스</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
     body {
       margin: 0;
       font-family: 'Noto Sans KR', sans-serif;
-      background-color: #e9f0f8;
+      background-color: #f5f6f7;
     }
 
     .header {
-      background-color: white;
+      background-color: #0047a0;
       padding: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #ccc;
+      color: white;
     }
 
     .header img {
@@ -27,7 +29,7 @@
     .menu-icon {
       width: 24px;
       height: 24px;
-      background: url('≡ 넣을 아이콘') no-repeat center center;
+      background: url('menu_icon.png') no-repeat center center;
       background-size: contain;
       cursor: pointer;
     }
@@ -35,44 +37,45 @@
     .container {
       margin: 20px;
       background-color: white;
-      border-radius: 20px;
+      border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 
     .photo {
-      width: 120px;
-      height: 160px;
+      width: 100px;
+      height: 130px;
       background-color: #ddd;
       margin: 0 auto 10px;
-      border-radius: 8px;
-      background-image: url('사진 넣을 곳');
+      border-radius: 4px;
+      background-image: url('photo.jpg');
       background-size: cover;
       background-position: center;
     }
 
     .info {
-      font-size: 18px;
+      font-size: 16px;
       margin-bottom: 5px;
+      text-align: center;
     }
 
     .ssn {
-      font-size: 16px;
+      font-size: 14px;
       letter-spacing: 2px;
+      text-align: center;
     }
 
     .qrcode {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       margin: 10px auto;
-      background: url('https://github.com/seanlee1201/mobile-id/blob/main/adult.html') no-repeat center center;
+      background: url('qrcode.png') no-repeat center center;
       background-size: contain;
     }
 
     .progress-container {
       margin-top: 10px;
-      text-align: left;
+      text-align: center;
       font-size: 14px;
       color: #2d68bc;
     }
@@ -100,27 +103,21 @@
 
     .details-btn {
       margin-top: 20px;
-      background-color: #0066cc;
+      background-color: #0047a0;
       color: white;
       border: none;
       padding: 12px 0;
       width: 100%;
-      font-size: 18px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    .hidden-detail {
       font-size: 16px;
-      margin-top: 10px;
-      letter-spacing: 1px;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
     .capture-warning {
       position: fixed;
       bottom: 0;
       width: 100%;
-      background: linear-gradient(to right, #3a75c4, #2d68bc);
+      background-color: #0047a0;
       color: white;
       font-weight: bold;
       padding: 8px 0;
@@ -149,16 +146,16 @@
 <body>
 
   <div class="header">
-    <img src="정부로고.png" alt="정부24 로고">
+    <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부24 로고">
     <div class="menu-icon" onclick="alert('확장 메뉴는 현재 사용할 수 없습니다.')"></div>
   </div>
 
   <div class="container">
-    <div class="photo">images/id-photo.jpg</div>
+    <div class="images/id-photo.jpg"></div>
     <div class="info">이시형</div>
-    <div class="ssn" id="ssn">051201-3******</div>
+    <div class="ssn" id="ssn">051201-*******</div>
     <div class="info">부산광역시 사하구</div>
-    <div class="qrcode">https://github.com/seanlee1201/mobile-id/blob/main/adult.html</div>
+    <div class="https://github.com/seanlee1201/mobile-id/blob/main/adult.html"></div>
     <div class="progress-container">
       남은시간
       <div class="progress-bar">
@@ -176,7 +173,7 @@
     }
 
     function hideDetail() {
-      document.getElementById("ssn").innerText = "051201-3******";
+      document.getElementById("ssn").innerText = "051201-*******";
     }
   </script>
 </body>
