@@ -1,50 +1,183 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>모바일 신분증</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주민등록증모바일확인서비스</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #e9f0f8;
+    }
+
+    .header {
+      background-color: white;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .header img {
+      height: 24px;
+    }
+
+    .menu-icon {
+      width: 24px;
+      height: 24px;
+      background: url('≡ 넣을 아이콘') no-repeat center center;
+      background-size: contain;
+      cursor: pointer;
+    }
+
+    .container {
+      margin: 20px;
+      background-color: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .photo {
+      width: 120px;
+      height: 160px;
+      background-color: #ddd;
+      margin: 0 auto 10px;
+      border-radius: 8px;
+      background-image: url('사진 넣을 곳');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .info {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .ssn {
+      font-size: 16px;
+      letter-spacing: 2px;
+    }
+
+    .qrcode {
+      width: 100px;
+      height: 100px;
+      margin: 10px auto;
+      background: url('QR코드 넣을 곳') no-repeat center center;
+      background-size: contain;
+    }
+
+    .progress-container {
+      margin-top: 10px;
+      text-align: left;
+      font-size: 14px;
+      color: #2d68bc;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background-color: #ccc;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress {
+      height: 100%;
+      width: 100%;
+      background-color: #2d68bc;
+      animation: countdown 30s linear forwards;
+    }
+
+    @keyframes countdown {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    .details-btn {
+      margin-top: 20px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      padding: 12px 0;
+      width: 100%;
+      font-size: 18px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .hidden-detail {
+      font-size: 16px;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
+
+    .capture-warning {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to right, #3a75c4, #2d68bc);
+      color: white;
+      font-weight: bold;
+      padding: 8px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      z-index: 9999;
+    }
+
+    .capture-warning::after {
+      content: "📵 캡쳐방지 시스템이 작동 중입니다.";
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 12s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
 </head>
 <body>
+
   <div class="header">
-    <img src="gov_logo.png" alt="logo" class="logo">
-    <div class="title">주민등록증모바일확인서비스</div>
+    <img src="정부로고.png" alt="정부24 로고">
+    <div class="menu-icon" onclick="alert('확장 메뉴는 현재 사용할 수 없습니다.')"></div>
   </div>
 
-  <div class="card">
-    <div style="display: flex; justify-content: space-between;">
-      <div class="photo"></div>
-      <div class="qr"></div>
+  <div class="container">
+    <div class="photo">사진 넣을 곳</div>
+    <div class="info">이시형</div>
+    <div class="ssn" id="ssn">051201-*******</div>
+    <div class="info">부산광역시 사하구</div>
+    <div class="qrcode">QR코드 넣을 곳</div>
+    <div class="progress-container">
+      남은시간
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
     </div>
-
-    <div class="info">
-      <strong>이시형</strong><br>
-      <span id="rrn">051201-3******</span><br>
-      부산광역시 사하구
-    </div>
-
-    <div class="hidden-detail" id="detail">
-      발급일: 2023.02.19<br>
-      발급기관: 부산광역시 사하구청<br>
-    </div>
-
-    <div class="progress">
-      <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    <div class="time-left" id="time-left">남은시간 30초</div>
-
-    <button class="btn" 
-      ontouchstart="showDetail()" 
-      onmousedown="showDetail()" 
-      ontouchend="hideDetail()" 
-      onmouseup="hideDetail()" 
-      onmouseleave="hideDetail()">상세정보 표시</button>
+    <button class="details-btn" ontouchstart="showDetail()" ontouchend="hideDetail()" onmousedown="showDetail()" onmouseup="hideDetail()">상세정보 표시</button>
   </div>
 
-  <div class="footer-banner">📵 캡처방지 시스템이 작동 중입니다.</div>
+  <div class="capture-warning"></div>
 
-  <script src="script.js"></script>
+  <script>
+    function showDetail() {
+      document.getElementById("ssn").innerText = "051201-3823913";
+    }
+
+    function hideDetail() {
+      document.getElementById("ssn").innerText = "051201-*******";
+    }
+  </script>
 </body>
 </html>
