@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>모바일 신분증</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="header">
+    <img src="gov_logo.png" alt="logo" class="logo">
+    <div class="title">주민등록증모바일확인서비스</div>
+  </div>
+
+  <div class="card">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="photo"></div>
+      <div class="qr"></div>
+    </div>
+
+    <div class="info">
+      <strong>이시형</strong><br>
+      <span id="rrn">051201-3******</span><br>
+      부산광역시 사하구
+    </div>
+
+    <div class="hidden-detail" id="detail">
+      발급일: 2023.02.19<br>
+      발급기관: 부산광역시 사하구청<br>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="time-left" id="time-left">남은시간 30초</div>
+
+    <button class="btn" 
+      ontouchstart="showDetail()" 
+      onmousedown="showDetail()" 
+      ontouchend="hideDetail()" 
+      onmouseup="hideDetail()" 
+      onmouseleave="hideDetail()">상세정보 표시</button>
+  </div>
+
+  <div class="footer-banner">📵 캡처방지 시스템이 작동 중입니다.</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
