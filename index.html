@@ -3,57 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>모바일 신분증</title>
+  <title>주민등록증 모바일 확인서비스</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
       margin: 0;
-      background-color: #f0f0f0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e6e6e6;
+      font-family: "Helvetica", sans-serif;
     }
 
     .id-card {
       width: 360px;
-      height: 220px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
+      height: 228px;
       margin: 40px auto;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.25);
       position: relative;
+      overflow: hidden;
       padding: 16px;
     }
 
     .header {
-      font-size: 14px;
-      color: #003478;
+      font-size: 13px;
       font-weight: bold;
-      margin-bottom: 12px;
+      color: #003478;
+      text-align: left;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .gov-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+
+    .expand-icon {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 20px;
+      height: 20px;
+      background-image: url('images/png-clipart-three-gray-lines-illustration-hamburger-menu-icon-icons-logos-emojis-menu-icons.png'); /* 확장 아이콘 이미지 */
+      background-size: cover;
     }
 
     .photo {
-      width: 100px;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 6px;
+      width: 84px;
+      height: 110px;
       border: 1px solid #ccc;
+      object-fit: cover;
+      border-radius: 3px;
     }
 
     .info {
       position: absolute;
-      left: 130px;
       top: 60px;
+      left: 120px;
     }
 
     .info p {
-      margin: 6px 0;
       font-size: 14px;
+      margin: 6px 0;
+    }
+
+    .qr {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 60px;
+      height: 60px;
+    }
+
+    .qr img {
+      width: 100%;
+      height: 100%;
     }
 
     .secure-banner {
       position: absolute;
       bottom: 0;
       width: 100%;
-      background: linear-gradient(to right, #0064d2, #8cb4f2); /* 정부24 스타일 색상 */
+      background: linear-gradient(to right, #0064d2, #8cb4f2);
       color: white;
       font-weight: bold;
       font-size: 13px;
@@ -69,59 +106,78 @@
 
     @keyframes scroll-left {
       0% {
-        transform: translateX(0);
+        transform: translateX(0%);
       }
       100% {
         transform: translateX(-100%);
       }
     }
 
-    .expand-icon {
+    .toggle-area {
       position: absolute;
-      top: 12px;
-      right: 16px;
-      width: 20px;
+      top: 105px;
+      left: 120px;
+      width: 200px;
       height: 20px;
-      background-image: url('expand-icon.png'); /* ✅ [여기에는 실제 확장 아이콘 이미지 파일을 업로드하세요] */
-      background-size: cover;
     }
 
-    .qr {
-      position: absolute;
-      bottom: 10px;
-      right: 16px;
-      width: 60px;
-      height: 60px;
+    .toggle-area:active ~ .info .rrn {
+      font-family: monospace;
+      letter-spacing: 1px;
     }
 
-    .qr img {
-      width: 100%;
-      height: 100%;
+    .hidden {
+      display: none;
+    }
+
+    @media screen and (max-width: 400px) {
+      .id-card {
+        transform: scale(0.95);
+        transform-origin: top;
+      }
     }
   </style>
+  <script>
+    function toggleRRN(show) {
+      const rrnElement = document.getElementById('rrn');
+      rrnElement.innerText = show ? '051201-3823913' : '051201-3******';
+    }
+  </script>
 </head>
 <body>
   <div class="id-card">
-    <div class="header">주민등록증 모바일 확인서비스</div>
+    <div class="header">
+      <img class="gov-icon" src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 로고" />
+      주민등록증 모바일 확인서비스
+    </div>
 
-    <!-- ✅ 증명사진 위치입니다 (photo.jpg로 교체 또는 수정 가능) -->
-    <img class="photo" src="photo.jpg" alt="증명사진" />
+    <!-- 확장 아이콘 -->
+    <div class="images/png-clipart-three-gray-lines-illustration-hamburger-menu-icon-icons-logos-emojis-menu-icons.png" title="확장 아이콘"></div>
 
+    <!-- 증명사진 -->
+    <img class="photo" src="images/id-photo.jpg" alt="증명사진" />
+
+    <!-- 개인정보 -->
     <div class="info">
       <p><strong>이름:</strong> 이시형</p>
-      <p><strong>주민등록번호:</strong> 051201-3******</p>
+      <p><strong>주민등록번호:</strong> <span id="rrn">051201-3******</span></p>
       <p><strong>주소:</strong> 부산광역시 사하구</p>
     </div>
 
-    <!-- ✅ 확장 아이콘 위치입니다 (실제 확장 기능 없음. UI용) -->
-    <div class="expand-icon" title="확장 아이콘 (비작동)"></div>
-
-    <!-- ✅ QR코드 위치입니다 (예: qr.png 같은 파일로 교체 가능) -->
+    <!-- QR 코드 -->
     <div class="qr">
-      <img src="qr.png" alt="QR코드"> <!-- QR코드 이미지 업로드 필요 -->
+      <img src="images/제목 없음.jpeg" alt="QR코드" />
     </div>
 
-    <!-- ✅ 캡쳐방지 시스템 안내 배너 (정부24 스타일 색상) -->
+    <!-- 터치영역 (상세정보 토글용) -->
+    <div class="toggle-area"
+         onmousedown="toggleRRN(true)"
+         onmouseup="toggleRRN(false)"
+         ontouchstart="toggleRRN(true)"
+         ontouchend="toggleRRN(false)">
+    </div>
+
+    <!-- 캡쳐방지 시스템 배너 -->
     <div class="secure-banner">
       <span>캡쳐방지 시스템이 작동중입니다. 캡쳐방지 시스템이 작동중입니다. 캡쳐방지 시스템이 작동중입니다.</span>
     </div>
