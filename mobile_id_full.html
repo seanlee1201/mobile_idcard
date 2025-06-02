@@ -2,6 +2,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(function(reg) {
+        console.log('Service Worker 등록 성공:', reg);
+      })
+      .catch(function(err) {
+        console.log('Service Worker 등록 실패:', err);
+      });
+  }
+</script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>주민등록증 모바일 확인서비스</title>
