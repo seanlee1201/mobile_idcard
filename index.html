@@ -26,8 +26,15 @@
       justify-content: space-between;
       align-items: center;
     }
-    .header img {
-      height: 24px;
+    .title-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .title-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
     }
     .expand-icon {
       width: 24px;
@@ -52,9 +59,13 @@
       font-weight: 700;
       line-height: 1.6;
     }
-    .info-left .id {
+    .info-left .date {
       font-size: 16px;
       font-weight: 600;
+    }
+    .info-left .address {
+      font-size: 13px;
+      color: #666;
     }
     .info-right img {
       width: 90px;
@@ -115,24 +126,56 @@
       display: inline-block;
       animation: slide 10s linear infinite;
     }
+    .law-text {
+      font-size: 11px;
+      color: #e0e0e0;
+      text-align: center;
+      margin-top: 4px;
+    }
     @keyframes slide {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
+    .details-popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+    .switch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+    }
+    .switch label {
+      margin: 0 10px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 로고">
-      <div class="expand-icon"></div>
+  <div class="header" style="padding: 10px 20px; justify-content: space-between;">
+    <div class="title-area">
+      <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 로고" style="height: 24px;">
+      <span class="title-text">주민등록증 모바일 확인서비스</span>
     </div>
+    <div class="expand-icon"></div>
+  </div>
+  <div class="container">
     <img src="images/id-photo.jpg" alt="증명사진" class="photo">
     <div class="info">
       <div class="info-left">
         이시형<br>
-        <span class="id" id="id-number">051201-3******</span><br>
-        부산광역시 사하구
+        <span class="date">05. 12. 01</span><br>
+        <span class="address">부산광역시 괘법동 516-1</span>
       </div>
       <div class="info-right">
         <img src="images/제목 없음.jpeg" alt="QR코드">
@@ -143,25 +186,37 @@
     </div>
     <div class="time">30초</div>
     <div class="desc">QR코드를 리더기로 스캔하세요</div>
-    <button class="btn" ontouchstart="showDetails()" ontouchend="hideDetails()" onmousedown="showDetails()" onmouseup="hideDetails()">상세정보 표시</button>
+    <button class="btn" onclick="toggleDetails()">상세정보 표시</button>
   </div>
   <div class="security-warning">
-    <div class="security-text">
-      캡쳐방지 시스템이 작동 중입니다.
+    <div class="security-text">캡쳐방지 시스템이 작동 중입니다.</div>
+    <div class="law-text">형법 제232조 2항 전자신분증 등 공적 전자기록을 위조하거나 변조한 자는 10년 이하의 징역에 처한다</div>
+  </div>
+
+  <div class="details-popup" id="details">
+    <img src="images/id-photo.jpg" alt="증명사진" style="width: 120px; border-radius: 8px;">
+    <div id="popup-id">051201-3******</div>
+    <div class="switch">
+      <label>OFF</label>
+      <input type="checkbox" id="toggle-switch" onchange="switchToggle(this)">
+      <label>ON</label>
     </div>
+    <div id="popup-address">부산광역시 괘법동 516-1 1동 302호</div>
   </div>
 
   <script>
-    const idElement = document.getElementById('id-number');
-    const fullId = '051201-3823913';
-    const maskedId = '051201-3******';
-
-    function showDetails() {
-      idElement.textContent = fullId;
+    function toggleDetails() {
+      const popup = document.getElementById('details');
+      popup.style.display = popup.style.display === 'none' || popup.style.display === '' ? 'block' : 'none';
     }
 
-    function hideDetails() {
-      idElement.textContent = maskedId;
+    function switchToggle(checkbox) {
+      const id = document.getElementById('popup-id');
+      if (checkbox.checked) {
+        id.textContent = '051201-3823913';
+      } else {
+        id.textContent = '051201-3******';
+      }
     }
   </script>
 </body>
