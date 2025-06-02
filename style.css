@@ -1,0 +1,17 @@
+/* QR 코드 이미지 크기 */
+.qr-code img {
+  width: 80px;
+  height: 80px;
+  margin-top: 10px;
+}
+
+/* 캡쳐방지 패널 색상 (딱정벌레 등딱지색) */
+.security-warning {
+  background: linear-gradient(90deg, #264e36, #2d6b43, #3d9b5f);
+}
+
+/* 법률 문구 스타일 - 작고 회색 */
+.legal {
+  font-size: 11px;
+  color: #ccc;
+}
