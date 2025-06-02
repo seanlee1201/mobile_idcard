@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>정부24 모바일 신분증</title>
+<style>
+  /* Reset & 기본 스타일 */
+  html, body {
+    height: 100%;
+    margin: 0; padding: 0;
+    background:#111;
+    font-family: 'Noto Sans KR', sans-serif;
+    color:#fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 360px;
+    width: 100%;
+    background: linear-gradient(145deg, #4a90e2, #a56de2);
+    border-radius: 16px;
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.2),
+                0 0 20px rgba(0,0,0,0.5);
+    padding: 24px 20px 120px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 상단 헤더 */
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .header img {
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+  }
+  .header .title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  /* 신분증 정보 */
+  .info {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .info .name {
+    font-weight: 700;
+    font-size: 19px;
+    margin-bottom: 8px;
+  }
+  .info .birth, .info .address {
+    margin-bottom: 4px;
+  }
+
+  /* QR코드 */
+  .qr {
+    position: absolute;
+    top: 24px;
+    right: 20px;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  }
+  .qr img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 상세정보 버튼 */
+  .detail-btn {
+    margin: 16px 0 0 0;
+    width: 100%;
+    padding: 12px 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .detail-btn:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* 상세정보 영역 */
+  .detail-info {
+    margin-top: 20px;
+    display: none;
+  }
+  .detail-info.active {
+    display: block;
+  }
+
+  /* 증명사진 */
+  .id-photo {
+    width: 100px;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+  }
+  .id-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 주민등록번호 */
+  .resident-number {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    user-select: none;
+  }
+  .toggle-btn {
+    margin-left: 12px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .toggle-btn:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* 상세주소 */
+  .detail-address {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #eee;
+  }
+
+  /* 하단 고정 패널 */
+  .bottom-panel {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 50px;
+    background: linear-gradient(145deg, #4a90e2, #a56de2);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    font-size: 14px;
+    box-shadow: 0 -3px 12px rgba(0,0,0,0.6);
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  /* 캡쳐방지 텍스트 */
+  .bottom-panel .left-text {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* 형법 조항 스크롤 텍스트 */
+  .bottom-panel .right-text {
+    flex-grow: 1;
+    margin-left: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+  .scroll-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollLeft 15s linear infinite;
+  }
+  @keyframes scrollLeft {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* 30초 타이머 슬라이드 */
+  .timer-container {
+    position: absolute;
+    bottom: 72px;
+    left: 20px;
+    right: 20px;
+    height: 6px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.25);
+    overflow: hidden;
+  }
+  .timer-progress {
+    height: 100%;
+    background: linear-gradient(145deg, #8e4ff8, #4a90e2);
+    width: 100%;
+    animation: timerSlide 30s linear forwards;
+  }
+  @keyframes timerSlide {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-label="정부24 모바일 신분증">
+  <header class="header">
+    <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 엠블럼" />
+    <div class="title">주민등록증 모바일 확인서비스</div>
+  </header>
+
+  <section class="info" aria-live="polite">
+    <div class="name">이시형</div>
+    <div class="birth">생년월일: 05. 12. 01.</div>
+    <div class="address">주소: 부산광역시 괘법동 516-1</div>
+  </section>
+
+  <div class="qr" aria-label="QR코드">
+    <img src="images/제목 없음.jpeg" alt="주민등록증 QR 코드" />
+  </div>
+
+  <button class="detail-btn" aria-expanded="false" aria-controls="detailInfo">상세정보 표시</button>
+
+  <section class="detail-info" id="detailInfo" aria-hidden="true">
+    <div class="id-photo" aria-label="증명사진">
+      <img src="images/id-photo.jpg" alt="이시형 증명사진" />
+    </div>
+    <div>
+      주민등록번호:
+      <span class="resident-number" id="residentNumber">051201-3******</span>
+      <button class="toggle-btn" aria-pressed="false" aria-controls="residentNumber">보기</button>
+    </div>
+    <div class="detail-address">
+      상세주소: 부산광역시 괘법동 516-1 1동 302호
+    </div>
+  </section>
+
+  <div class="timer-container" aria-label="신분증 유효시간 타이머">
+    <div class="timer-progress"></div>
+  </div>
+</div>
+
+<div class="bottom-panel" role="contentinfo" aria-live="polite">
+  <div class="left-text">캡쳐방지 시스템이 작동중입니다.</div>
+  <div class="right-text" aria-hidden="true">
+    <span class="scroll-text">형법 제232조의2항에 의거 전자신분증 등 공적 전자기록을 위조하거나 변조한 자는 10년 이하의 징역과 3000만원 이하의 벌금형에 처한다</span>
+  </div>
+</div>
+
+<script>
+  const detailBtn = document.querySelector('.detail-btn');
+  const detailInfo = document.getElementById('detailInfo');
+  const residentNumber = document.getElementById('residentNumber');
+  const toggleBtn = document.querySelector('.toggle-btn');
+
+  const fullNumber = "051201-3823913";
+  const maskedNumber = "051201-3******";
+
+  detailBtn.addEventListener('click', () => {
+    const expanded = detailBtn.getAttribute('aria-expanded') === 'true';
+    detailBtn.setAttribute('aria-expanded', !expanded);
+    if (!expanded) {
+      detailInfo.classList.add('active');
+      detailInfo.setAttribute('aria-hidden', 'false');
+      detailBtn.textContent = '상세정보 숨기기';
