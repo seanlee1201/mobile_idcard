@@ -1,0 +1,15 @@
+{
+  "name": "주민등록증 모바일 확인서비스",
+  "short_name": "모바일 신분증",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eaf2fb",
+  "theme_color": "#0066d9",
+  "icons": [
+    {
+      "src": "images/id-photo.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    }
+  ]
+}
