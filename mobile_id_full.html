@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>주민등록증 모바일 확인서비스</title>
+  <link rel="manifest" href="manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #eaf2fb;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 360px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-left img {
+      height: 28px;
+      margin-right: 10px;
+    }
+    .header-left .title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #003478;
+    }
+    .expand-icon {
+      width: 24px;
+      height: 24px;
+      background: url('images/png-clipart-three-gray-lines-illustration-hamburger-menu-icon-icons-logos-emojis-menu-icons.png') no-repeat center center / contain;
+    }
+    .photo {
+      width: 160px;
+      height: auto;
+      border-radius: 8px;
+      margin: 15px auto;
+      display: block;
+    }
+    .info {
+      padding: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+    }
+    .info small {
+      font-size: 12px;
+      color: #777;
+    }
+    .progress {
+      margin-top: 15px;
+      height: 4px;
+      background: #ccc;
+      border-radius: 2px;
+      position: relative;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #0066d9;
+      animation: shrink 30s linear forwards;
+    }
+    .timer {
+      font-size: 14px;
+      color: #0066d9;
+      text-align: right;
+      padding-top: 4px;
+    }
+    @keyframes shrink {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+    .desc {
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .btn {
+      margin-top: 15px;
+      width: 100%;
+      background: #0066d9;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .security-warning {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #0077c2, #00a1e9, #66ccff);
+      color: white;
+      font-size: 14px;
+      text-align: center;
+      padding: 8px 0;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    .security-text, .law-text {
+      display: inline-block;
+      white-space: nowrap;
+      animation: slide 15s linear infinite;
+      margin-right: 50px;
+    }
+    @keyframes slide {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .hidden-details {
+      display: none;
+    }
+    .switch-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .switch {
+      width: 50px;
+      height: 28px;
+      background: #ccc;
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+    }
+    .switch::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    .switch.on::before {
+      transform: translateX(22px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="main-view">
+    <div class="header">
+      <div class="header-left">
+        <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 로고">
+        <span class="title">주민등록증 모바일 확인서비스</span>
+      </div>
+      <div class="expand-icon"></div>
+    </div>
+    <img src="images/id-photo.jpg" alt="증명사진" class="photo">
+    <div class="info">
+      이시형<br>
+      05. 12. 01<br>
+      <small>부산광역시 괘법동 516-1</small>
+    </div>
+    <div class="progress">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="timer" id="timer">30초</div>
+    <div class="desc">QR코드를 리더기로 스캔하세요</div>
+    <button class="btn" onclick="toggleDetail(true)">상세정보 표시</button>
+  </div>
+
+  <div class="container hidden-details" id="detail-view">
+    <img src="images/id-photo.jpg" alt="증명사진" class="photo">
+    <div class="info">
+      이시형<br>
+      <span id="full-id">051201-3******</span><br>
+      <small>부산광역시 괘법동 516-1 1동 302호</small>
+    </div>
+    <div class="switch-box">
+      <span>주민등록번호 보기</span>
+      <div class="switch" onclick="toggleId(this)"></div>
+    </div>
+    <button class="btn" onclick="toggleDetail(false)">뒤로가기</button>
+  </div>
+
+  <div class="security-warning">
+    <span class="security-text">⚠️ 캡쳐방지 시스템이 작동 중입니다.</span>
+    <span class="law-text">형법 제232조 2항 전자신분증 등 공적 전자기록을 위조하거나 변조한 자는 10년 이하의 징역에 처한다</span>
+  </div>
+
+  <script>
+    let time = 30;
+    const timer = document.getElementById('timer');
+    const progressBar = document.getElementById('progress-bar');
+
+    const interval = setInterval(() => {
+      time--;
+      if (time <= 0) {
+        clearInterval(interval);
+        timer.textContent = "만료됨";
+      } else {
+        timer.textContent = time + "초";
+      }
+    }, 1000);
+
+    function toggleDetail(show) {
+      document.getElementById('main-view').style.display = show ? 'none' : 'block';
+      document.getElementById('detail-view').style.display = show ? 'block' : 'none';
+    }
+
+    function toggleId(elem) {
+      const idEl = document.getElementById("full-id");
+      if (elem.classList.contains("on")) {
+        elem.classList.remove("on");
+        idEl.textContent = "051201-3******";
+      } else {
+        elem.classList.add("on");
+        idEl.textContent = "051201-3823913";
+      }
+    }
+  </script>
+</body>
+</html>
