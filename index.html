@@ -3,242 +3,160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>정부24 모바일 신분증</title>
+  <title>주민등록증 모바일 확인서비스</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6fa;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    body {
+      background-color: #f4f5f7;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding-top: 20px;
     }
-
-    .id-card {
-      width: 350px;
-      background: white;
-      margin-top: 80px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .card {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 360px;
       padding: 20px;
       position: relative;
     }
-
-    .emblem-title {
+    .header {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 15px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
-
-    .emblem-title img {
-      height: 30px;
-      margin-right: 10px;
+    .header img {
+      width: 32px;
     }
-
-    .emblem-title span {
+    .header span {
+      font-size: 14px;
       font-weight: bold;
-      font-size: 14px;
     }
-
     .photo {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    .photo img {
-      width: 80px;
-      height: 100px;
+      width: 100px;
+      height: 130px;
       object-fit: cover;
+      border: 2px solid #ccc;
       border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .info {
-      text-align: left;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .info span {
+      margin: 0 auto 10px;
       display: block;
-      margin: 5px 0;
     }
-
-    .gray-address {
-      font-size: 12px;
-      color: gray;
-    }
-
-    .qr {
+    .info {
       display: flex;
-      justify-content: flex-end;
-      margin-top: -60px;
+      justify-content: space-between;
+      align-items: flex-start;
     }
-
-    .qr img {
-      width: 60px;
-      height: 60px;
+    .info-left {
+      flex: 1;
     }
-
-    .button {
-      margin-top: 20px;
-      text-align: center;
+    .info-left .line {
+      margin-bottom: 8px;
     }
-
-    .button button {
-      background-color: #005bab;
+    .info-left .name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .info-left .birth {
+      font-size: 16px;
+    }
+    .info-left .address {
+      font-size: 12px;
+      color: #777;
+    }
+    .info-right img {
+      width: 70px;
+      height: 70px;
+    }
+    .details-button {
+      margin-top: 16px;
+      background-color: #005bac;
       color: white;
       padding: 10px 20px;
+      border-radius: 6px;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      width: 100%;
+      font-size: 14px;
     }
-
     .banner {
       position: fixed;
       bottom: 0;
       width: 100%;
-      padding: 10px;
-      background: linear-gradient(90deg, #0066cc, #6633cc);
+      background: linear-gradient(to right, #0077cc, #a29bfe);
       color: white;
+      font-size: 12px;
+      height: 28px;
       overflow: hidden;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .scrolling-text {
-      display: inline-block;
-      white-space: nowrap;
-      animation: scroll 30s linear infinite;
-      padding-left: 100%;
-    }
-
-    @keyframes scroll {
-      from { transform: translateX(0%); }
-      to { transform: translateX(-100%); }
-    }
-
-    .timer-bar {
-      height: 3px;
-      background: #005bab;
-      animation: timer 30s linear infinite;
-      margin-top: 10px;
-    }
-
-    @keyframes timer {
-      from { width: 100%; }
-      to { width: 0%; }
-    }
-
-    /* 상세정보 창 스타일 */
-    .details-page {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 80px;
-    }
-
-    .toggle-box {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 280px;
-      margin: 10px auto;
+      font-weight: 600;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
-
-    .toggle-box input[type="checkbox"] {
-      appearance: none;
-      width: 40px;
-      height: 20px;
-      background: #ccc;
-      border-radius: 4px;
-      position: relative;
-      cursor: pointer;
+    .banner-text {
+      white-space: nowrap;
+      animation: scroll-left 15s linear infinite;
+      padding-left: 100%;
     }
-
-    .toggle-box input[type="checkbox"]:checked {
-      background: #0077ff;
+    @keyframes scroll-left {
+      from {
+        transform: translateX(0%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
     }
-
-    .toggle-box input[type="checkbox"]::before {
-      content: "";
-      width: 18px;
-      height: 18px;
-      background: white;
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      transition: 0.3s;
+    .timer-bar {
+      height: 3px;
+      background: linear-gradient(to right, #00b4db, #8e2de2);
+      margin-top: 10px;
+      animation: timer-slide 30s linear forwards;
     }
-
-    .toggle-box input[type="checkbox"]:checked::before {
-      transform: translateX(20px);
+    @keyframes timer-slide {
+      from {
+        width: 100%;
+      }
+      to {
+        width: 0%;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="id-card" id="mainView">
-  <div class="emblem-title">
-    <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 엠블럼">
-    <span>주민등록증 모바일 확인서비스</span>
-  </div>
-  <div class="photo">
-    <img src="images/id-photo.jpg" alt="증명사진">
-  </div>
-  <div class="info">
-    <span><strong>이시형</strong></span>
-    <span>05. 12. 01.</span>
-    <span class="gray-address">부산광역시 괘법동 516-1</span>
-  </div>
-  <div class="qr">
-    <img src="images/제목 없음.jpeg" alt="QR 코드">
-  </div>
-  <div class="button">
-    <button onclick="showDetails()">상세정보 표시</button>
-  </div>
-  <div class="timer-bar"></div>
-</div>
-
-<!-- 상세정보 페이지 -->
-<div class="details-page" id="detailsView">
-  <div class="photo">
-    <img src="images/id-photo.jpg" alt="증명사진">
-  </div>
-  <div class="info">
-    <span><strong>이시형</strong></span>
-    <span id="rrn">051201-3******</span>
-    <div class="toggle-box">
-      <label>주민등록번호</label>
-      <input type="checkbox" onchange="toggleRRN(this)">
+  <div class="card">
+    <div class="header">
+      <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 앰블럼">
+      <span>주민등록증 모바일 확인서비스</span>
     </div>
-    <span class="gray-address">부산광역시 괘법동 516-1 1동 302호</span>
+    <img src="images/id-photo.jpg" alt="증명사진" class="photo" />
+    <div class="info">
+      <div class="info-left">
+        <div class="line name">이시형</div>
+        <div class="line birth">05. 12. 01</div>
+        <div class="line address">부산광역시 괘법동 516-1</div>
+      </div>
+      <div class="info-right">
+        <img src="images/제목 없음.jpeg" alt="QR 코드">
+      </div>
+    </div>
+    <div class="timer-bar"></div>
+    <button class="details-button" onclick="location.href='details.html'">상세정보 표시</button>
   </div>
-</div>
 
-<div class="banner">
-  <div class="scrolling-text">
-    캡처방지 시스템이 작동중입니다. 주민등록증 위․변조 및 행사 시 형법 제225조(공문서등의 위․변조), 제229조(위조등 공문서의 행사)에 따라 10년 이하의 징역에 처할 수 있습니다.
+  <div class="banner">
+    <div class="banner-text">
+      캡쳐방지 시스템이 작동중입니다. 주민등록증 위․변조 및 행사 시 형법 제225조(공문서등의 위․변조), 제229조(위조등 공문서의 행사)에 따라 10년 이하의 징역에 처할 수 있습니다.
+    </div>
   </div>
-</div>
-
-<script>
-  function showDetails() {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('detailsView').style.display = 'flex';
-  }
-
-  function toggleRRN(toggle) {
-    const rrn = document.getElementById('rrn');
-    if (toggle.checked) {
-      rrn.textContent = '051201-3823913';
-    } else {
-      rrn.textContent = '051201-3******';
-    }
-  }
-</script>
 
 </body>
 </html>
