@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>정부24 주민등록증 모바일 확인서비스</title>
+  <style>
+    /* 기본 스타일 */
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f6fa;
+    }
+
+    .container {
+      max-width: 390px;
+      margin: 40px auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* 상단 앰블럼 */
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .header img {
+      width: 24px;
+      margin-right: 8px;
+    }
+
+    .header span {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* 증명사진 */
+    .photo {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .photo img {
+      width: 90px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    /* 사용자 정보 */
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 15px;
+    }
+
+    .text-info {
+      flex-grow: 1;
+    }
+
+    .text-info p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .gray {
+      color: gray;
+      font-size: 13px;
+    }
+
+    .qr {
+      width: 60px;
+      height: 60px;
+    }
+
+    .qr img {
+      width: 100%;
+    }
+
+    /* 타이머 */
+    .timer {
+      text-align: right;
+      font-size: 12px;
+      padding: 0 15px;
+      color: #555;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: linear-gradient(to left, #4a90e2, #b58ded);
+      animation: slide 30s linear infinite;
+    }
+
+    @keyframes slide {
+      from {transform: translateX(100%);}
+      to {transform: translateX(-100%);}
+    }
+
+    /* 버튼 */
+    .button-box {
+      text-align: center;
+      margin: 12px 0;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* 상세 정보 레이아웃 */
+    .details {
+      display: none;
+      padding: 10px 15px;
+    }
+
+    .switch-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .switch {
+      width: 50px;
+      height: 24px;
+      background: #ccc;
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .switch::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: white;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      border-radius: 4px;
+      transition: 0.3s;
+    }
+
+    .switch.active {
+      background: #4a90e2;
+    }
+
+    .switch.active::after {
+      left: 28px;
+    }
+
+    /* 캡처방지 배너 */
+    .capture-banner {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to right, #0052cc, #b58ded);
+      color: white;
+      font-size: 13px;
+      overflow: hidden;
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .scroll-text {
+      white-space: nowrap;
+      display: inline-block;
+      animation: scroll 20s linear infinite;
+    }
+
+    @keyframes scroll {
+      0% {transform: translateX(100%);}
+      100% {transform: translateX(-100%);}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <img src="images/Emblem_of_the_Government_of_the_Republic_of_Korea.svg" alt="정부 엠블럼">
+    <span>주민등록증 모바일 확인서비스</span>
+  </div>
+
+  <div class="photo">
+    <img src="images/id-photo.jpg" alt="증명사진">
+  </div>
+
+  <div class="info" id="main-info">
+    <div class="text-info">
+      <p>이시형</p>
+      <p>05. 12. 01</p>
+      <p class="gray">부산광역시 괘법동 516-1</p>
+    </div>
+    <div class="qr">
+      <img src="images/제목 없음.jpeg" alt="QR 코드">
+    </div>
+  </div>
+
+  <div class="timer">
+    <span id="time-remaining">30초</span>
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="button-box">
+    <button class="btn" onclick="showDetails()">상세정보 표시</button>
+  </div>
+
+  <div class="details" id="details">
+    <div class="text-info">
+      <p>이시형</p>
+      <p id="rrn">051201-3******</p>
+      <p class="gray">부산광역시 괘법동 516-1 1동 302호</p>
+    </div>
+    <div class="switch-box">
+      <div class="switch" onclick="toggleRRN(this)"></div>
+    </div>
+    <div class="button-box">
+      <button class="btn" onclick="hideDetails()">뒤로가기</button>
+    </div>
+  </div>
+</div>
+
+<div class="capture-banner">
+  <div class="scroll-text">
+    캡쳐방지 시스템이 작동중입니다.   주민등록증 위․변조 및 행사 시 형법 제225조(공문서등의 위․변조), 제229조(위조등 공문서의 행사)에 따라 10년 이하의 징역에 처할 수 있습니다.
+  </div>
+</div>
+
+<script>
+  let timeLeft = 30;
+  const timer = document.getElementById('time-remaining');
+
+  setInterval(() => {
+    if (timeLeft > 0) {
+      timeLeft--;
+      timer.textContent = `${timeLeft}초`;
+    } else {
+      timeLeft = 30;
+    }
+  }, 1000);
+
+  function showDetails() {
+    document.getElementById('main-info').style.display = 'none';
+    document.getElementById('details').style.display = 'block';
+  }
+
+  function hideDetails() {
+    document.getElementById('main-info').style.display = 'flex';
+    document.getElementById('details').style.display = 'none';
+  }
+
+  function toggleRRN(el) {
+    el.classList.toggle('active');
+    const rrnText = document.getElementById('rrn');
+    if (el.classList.contains('active')) {
+      rrnText.textContent = '051201-3823913';
+    } else {
+      rrnText.textContent = '051201-3******';
+    }
+  }
+</script>
+
+</body>
+</html>
